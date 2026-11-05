@@ -681,11 +681,18 @@ button {
   padding: clamp(20px, 4vw, 56px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 12px;
   background:
     radial-gradient(1200px 500px at 85% -10%, var(--accent-soft), transparent 60%),
     var(--surface);
+}
+/* Center vertically when there is room, but never clip the top when content is taller. */
+.career-card > :first-child {
+  margin-top: auto;
+}
+.career-card > :last-child {
+  margin-bottom: auto;
 }
 .career-kicker {
   margin: 0;
