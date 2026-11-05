@@ -1102,8 +1102,23 @@ button {
     white-space: nowrap;
   }
   .toplinks a { padding: 8px; }
-  .impact { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .impact {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin-inline: -14px;
+    padding-inline: 14px;
+    scrollbar-width: none;
+  }
+  .impact li {
+    flex: none;
+    width: 46%;
+    min-width: 150px;
+    scroll-snap-align: start;
+    padding: 8px 10px;
+  }
   .impact-value { font-size: 19px; }
+  .intro { padding-block: 14px 10px; }
   .frame { height: 72svh; min-height: 480px; }
   .frame-dots { display: none; }
   .frame-bar { padding-left: 8px; gap: 6px; }

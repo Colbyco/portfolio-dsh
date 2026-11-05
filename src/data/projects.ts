@@ -358,10 +358,10 @@ export const entries: Entry[] = [
     ],
     preview: {
       mode: "live",
-      url: "https://aspicio.app/chart?loc=Seattle&lat=47.6062&lng=-122.3321&tz=America/Los_Angeles",
+      url: "https://aspicio.app/chart?loc=Seattle&lat=47.6062&lng=-122.3321&tz=America/Los_Angeles&scroll=chart",
       stampNow: "America/Los_Angeles",
       routes: [
-        { label: "Birth chart", url: "https://aspicio.app/chart?loc=Seattle&lat=47.6062&lng=-122.3321&tz=America/Los_Angeles", address: "aspicio.app/chart · Seattle, right now" },
+        { label: "Birth chart", url: "https://aspicio.app/chart?loc=Seattle&lat=47.6062&lng=-122.3321&tz=America/Los_Angeles&scroll=chart", address: "aspicio.app/chart · Seattle, right now" },
         { label: "3D sky", url: "https://aspicio.app/sky", address: "aspicio.app/sky" },
         { label: "Places map", url: "https://aspicio.app/places", address: "aspicio.app/places" },
         { label: "Accuracy", url: "https://aspicio.app/accuracy", address: "aspicio.app/accuracy" },
