@@ -6,6 +6,32 @@ Stage entry: `/previews/openai-chatbot/` (built output in `public/previews/opena
 - Original deployment (still live, used as the visual and behavioural reference): <https://openai-chat-bot.pages.dev/>.
 - Stack: Vue 3.2.37, Vuetify 3.0.0-beta.4, Vite 2.9.12, `openai` SDK 3.0.0, calling `text-davinci-002` from the browser.
 
+## Update (2026-11-04): live replies through the site's proxy, no visitor key
+
+This supersedes the bring-your-own-key design described further down (bar key form, Chat
+Completions with a visitor key). Sections below that mention the key bar are historical.
+
+- **Model.** OpenAI shut `text-davinci-002` down on 2024-01-04 and its replacement
+  `gpt-3.5-turbo-instruct` (plus `davinci-002`, `babbage-002`) on 2026-09-28
+  ([deprecations](https://developers.openai.com/api/docs/deprecations)). The closest surviving
+  relative is `gpt-3.5-turbo-0613` (GPT-3.5 family, June 2023 snapshot), still served through
+  OpenRouter (provider: Azure). Fallback: `gpt-3.5-turbo-16k`.
+- **Request.** `openai-bridge.js` posts the app's original prompt
+  (`You are a chat bot\n--------\nuser:…\nyou:`), `max_tokens` and `temperature` unchanged to
+  `/api/chatbot/completions`. `api/chatbot.js` forwards them to OpenRouter's legacy completions
+  endpoint and returns `{ choices: [{ text }] }`, so `HelloWorld.vue` renders it unchanged.
+- **Key and cost control.** The proxy uses a dedicated OpenRouter key stored as the Vercel
+  secret `OPENROUTER_CHATBOT_KEY`, capped at $5 per month by OpenRouter (hard limit). The proxy
+  also accepts only the original prompt template (message ≤ 1000 characters), clamps
+  temperature/max_tokens to the original slider ranges, requires this site's Origin/Referer, and
+  rate-limits each visitor (6/minute, 60/day per instance). Message text is never logged; only
+  model and token counts.
+- **UI.** The bar now states the substitution ("…Replies now come from gpt-3.5-turbo-0613…No key
+  needed."). `apiValidation`'s marked edit now passes because the proxy holds the key.
+- **Verified.** `qa/chatbot_live.py` (repo root) sends a real message through the original UI
+  (reply in ~1.3 s) and checks the guards (403 without/foreign origin, 400 wrong template,
+  413 too long).
+
 ## The original build, reproduced exactly
 
 `npm ci` with the **original `package-lock.json`** works on Node 24.18 / npm 11.16. No toolchain

@@ -119,7 +119,7 @@ export const entries: Entry[] = [
     date: "June 2022",
     stage: "Summer after 2nd year of college",
     title: "OpenAI Chatbot",
-    tagline: "A chat UI on GPT-3, before ChatGPT",
+    tagline: "A chat UI on GPT-3.5, before ChatGPT",
     summary:
       "A chat interface on OpenAI's text-davinci-002 completion model, built five months before ChatGPT launched.",
     built: [
@@ -137,7 +137,7 @@ export const entries: Entry[] = [
       mode: "original",
       url: "/previews/openai-chatbot/",
       address: "openai-chat-bot · 2022 build",
-      note: "Rebuilt from the 2022 lockfile; unmodified, it is byte-identical to the live 2022 deployment. OpenAI shut text-davinci-002 down in January 2024, so a small bridge sends chats to a current model with your own key, which stays in your browser.",
+      note: "Rebuilt from the 2022 lockfile; unmodified, it is byte-identical to the live 2022 deployment. OpenAI shut text-davinci-002 down in January 2024, so the app's original prompt and settings now go to gpt-3.5-turbo-0613, its closest surviving GPT-3.5 relative. Chat live, no key needed.",
     },
     links: [
       { label: "Source code", href: "https://github.com/Colbyco/OpenAI-Chat-Bot" },

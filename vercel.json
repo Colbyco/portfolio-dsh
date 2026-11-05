@@ -5,11 +5,13 @@
   "outputDirectory": "dist",
   "functions": {
     "api/weather.js": { "includeFiles": "node_modules/@electric-sql/pglite/dist/**", "maxDuration": 15 },
-    "api/library.js": { "includeFiles": "node_modules/@electric-sql/pglite/dist/**", "maxDuration": 15 }
+    "api/library.js": { "includeFiles": "node_modules/@electric-sql/pglite/dist/**", "maxDuration": 15 },
+    "api/chatbot.js": { "maxDuration": 30 }
   },
   "rewrites": [
     { "source": "/api/weather/(.*)", "destination": "/api/weather" },
-    { "source": "/api/library/(.*)", "destination": "/api/library" }
+    { "source": "/api/library/(.*)", "destination": "/api/library" },
+    { "source": "/api/chatbot/(.*)", "destination": "/api/chatbot" }
   ],
   "headers": [
     {

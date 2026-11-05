@@ -213,7 +213,7 @@ function tokenSliderInput(slider) {
 }
 
 async function apiValidation(key) {
-  // [preview] a key set in the portfolio bar satisfies the original key check
+  // [preview] the portfolio's server-side proxy holds the key, so the original key check passes
   if(hasPreviewKey()) {
     return true;
   }
