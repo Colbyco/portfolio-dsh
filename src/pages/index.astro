@@ -1,0 +1,249 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import { entries, FEATURED, MODE_LABEL, impact, skills } from "../data/projects";
+
+const featured = entries.find((e) => e.slug === FEATURED)!;
+const years = [...new Set(entries.map((e) => e.year))];
+const projectCount = entries.filter((e) => e.kind === "project").length;
+const modeIcon = { live: "lock", original: "code", simulated: "eye", contribution: "git", career: "briefcase" } as const;
+const careers = entries.filter((e) => e.kind === "career").reverse();
+
+// Payload for the client script (kept small: no long copy).
+const stageData = entries.map((e) => ({
+  slug: e.slug,
+  title: e.title,
+  date: e.date,
+  kind: e.kind,
+  mode: e.preview.mode,
+  modeLabel: MODE_LABEL[e.preview.mode],
+  url: e.preview.url ?? null,
+  stampNow: e.preview.stampNow ?? null,
+  address: e.preview.address,
+  routes: e.preview.routes ?? null,
+}));
+---
+<Base
+  title="Colby Baker · Software engineer"
+  description="Software engineer at CVS Health. Explore every project from 2021 to today live in one page: the real Aspicio site, restored apps running their original code, and the impact of my work at CVS."
+>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/">
+        <span class="monogram" aria-hidden="true">CB</span>
+        <span class="brand-name">Colby Baker</span>
+      </a>
+      <nav class="toplinks" aria-label="Profiles and resume">
+        <a href="/Colby-Baker-Resume.pdf"><Icon name="file" /><span>Resume</span></a>
+        <a href="https://github.com/Colbyco" rel="me"><Icon name="github" /><span>GitHub</span></a>
+        <a href="https://www.linkedin.com/in/bakercolby/" rel="me"><Icon name="linkedin" /><span>LinkedIn</span></a>
+        <button class="icon-btn theme-toggle" type="button" aria-label="Color theme: system" data-theme-toggle>
+          <Icon name="theme" size={18} />
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro" aria-labelledby="intro-name">
+      <div class="intro-id">
+        <h1 id="intro-name">Colby Baker</h1>
+        <p class="lede">
+          Software engineer at <strong>CVS Health</strong>, building healthcare APIs and AI agent services.
+          On my own time I ship products end to end, like <a href="#aspicio" data-select="aspicio">Aspicio</a>.
+        </p>
+        <p class="intro-meta">Seattle, WA · B.S. Computer Science, Florida State University</p>
+      </div>
+      <ul class="impact" aria-label="Impact at CVS Health">
+        {impact.map((m) => (
+          <li><span class="impact-value">{m.value}</span><span class="impact-label">{m.label}</span></li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="theater" id="theater" aria-label="Projects and roles, each with a live preview">
+      <nav class="rail" aria-labelledby="rail-title">
+        <div class="rail-head">
+          <h2 id="rail-title">Progression <span class="rail-span">2021 – now</span></h2>
+          <button class="chip-btn" type="button" data-select="summoner" title="Start the progression from the first project">
+            <Icon name="play" size={12} /> From 2021
+          </button>
+        </div>
+        <div class="rail-list" role="tablist" aria-orientation="vertical" aria-label={`${projectCount} projects and 3 roles, oldest first`}>
+          {years.map((year) => (
+            <div class="rail-year" role="presentation">
+              <span class="rail-year-label" aria-hidden="true">{year}</span>
+              {entries.filter((e) => e.year === year).map((e) => (
+                <button
+                  class:list={["rail-item", `kind-${e.kind}`, `mode-${e.preview.mode}`]}
+                  type="button"
+                  role="tab"
+                  id={`tab-${e.slug}`}
+                  aria-controls="stage-panel"
+                  aria-selected={e.slug === FEATURED ? "true" : "false"}
+                  tabindex={e.slug === FEATURED ? 0 : -1}
+                  data-slug={e.slug}
+                >
+                  <span class="rail-dot" aria-hidden="true"></span>
+                  <span class="rail-date">{e.date}</span>
+                  <span class="rail-title">{e.railTitle ?? e.title}</span>
+                  <span class="rail-tag">{e.tagline}</span>
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
+      </nav>
+
+      <div class="stage-col" role="tabpanel" id="stage-panel" aria-labelledby={`tab-${FEATURED}`}>
+        <div class="frame" data-frame>
+          <div class="frame-bar">
+            <span class="frame-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="frame-address" data-address>
+              <Icon name={modeIcon[featured.preview.mode]} size={13} class="address-icon" />
+              <span data-address-text>{featured.preview.address}</span>
+            </span>
+            <span class:list={["badge", `badge-${featured.preview.mode}`]} data-badge>{MODE_LABEL[featured.preview.mode]}</span>
+            <span class="frame-actions">
+              <button class="icon-btn" type="button" data-reload aria-label="Reload preview" title="Reload preview"><Icon name="reload" /></button>
+              <button class="icon-btn" type="button" data-expand aria-label="Full screen preview" title="Full screen"><Icon name="expand" /></button>
+              <a class="icon-btn" data-open href={featured.preview.url} target="_blank" rel="noopener" aria-label="Open preview in a new tab" title="Open in a new tab"><Icon name="external" /></a>
+            </span>
+          </div>
+          <div class="route-bar" data-routes role="toolbar" aria-label="Pages in this preview" hidden></div>
+          <div class="frame-view" data-view>
+            <img
+              class="poster"
+              data-poster
+              src={`/posters/${FEATURED}.webp`}
+              srcset={`/posters/${FEATURED}-800.webp 800w, /posters/${FEATURED}.webp 1280w`}
+              sizes="(max-width: 1099px) 100vw, 56vw"
+              alt=""
+              width="1280"
+              height="860"
+              fetchpriority="high"
+              decoding="async"
+            />
+            {careers.map((e) => (
+              <div class="career-card" data-career={e.slug} hidden>
+                <p class="career-kicker"><Icon name="briefcase" size={14} /> {e.date} · CVS Health</p>
+                <h3 class="career-title">{e.title.replace(", CVS Health", "")}</h3>
+                <p class="career-summary">{e.summary}</p>
+                <ul class="career-metrics">
+                  {e.metrics?.map((m) => <li><span class="cm-value">{m.value}</span><span class="cm-label">{m.label}</span></li>)}
+                </ul>
+                <p class="career-note">{e.preview.note}</p>
+              </div>
+            ))}
+            <div class="loading" data-loading hidden>
+              <span class="spinner" aria-hidden="true"></span>
+              <p data-loading-text>Loading preview…</p>
+              <p class="loading-slow" data-loading-slow hidden>
+                This is taking a while.
+                <button type="button" class="link-btn" data-retry>Try again</button>
+                or <a data-loading-open href="#" target="_blank" rel="noopener">open it in a new tab</a>.
+              </p>
+            </div>
+            <noscript>
+              <p class="noscript-note">Live previews need JavaScript. Every project's links still work in the panel beside this one.</p>
+            </noscript>
+          </div>
+        </div>
+        <div class="stage-nav">
+          <button class="nav-btn" type="button" data-prev><Icon name="prev" /><span data-prev-label>Previous</span></button>
+          <span class="stage-pos" data-pos aria-live="polite"></span>
+          <button class="nav-btn" type="button" data-next><span data-next-label>Next</span><Icon name="next" /></button>
+        </div>
+      </div>
+
+      <aside class="details" aria-label="Project details">
+        {entries.map((e) => (
+          <article class="detail" data-detail={e.slug} id={e.slug} hidden={e.slug !== FEATURED}>
+            <p class="detail-when"><span class="when-date">{e.date}</span><span class="when-sep" aria-hidden="true">—</span><span class="when-stage">{e.stage}</span></p>
+            <h2 class="detail-title">{e.title}</h2>
+            <p class="detail-summary">{e.summary}</p>
+            <h3 class="detail-h">{e.kind === "career" ? "What I did" : "What I built"}</h3>
+            <ul class="detail-built">
+              {e.built.map((b) => <li>{b}</li>)}
+            </ul>
+            <h3 class="detail-h">{e.kind === "career" ? "Focus" : "Stack"}</h3>
+            <dl class="tech">
+              {e.tech.map((g) => (
+                <div class="tech-row">
+                  <dt>{g.label}</dt>
+                  <dd>{g.items.map((i) => <span class="tag">{i}</span>)}</dd>
+                </div>
+              ))}
+            </dl>
+            <p class:list={["preview-note", `note-${e.preview.mode}`]}>
+              <span class="note-label">{MODE_LABEL[e.preview.mode]}</span>
+              {e.preview.note}
+            </p>
+            {e.links.length > 0 && (
+              <p class="detail-links">
+                {e.links.map((l) => (
+                  <a class="link-pill" href={l.href} target="_blank" rel="noopener">{l.label}<Icon name="external" size={13} /></a>
+                ))}
+              </p>
+            )}
+          </article>
+        ))}
+      </aside>
+    </section>
+
+    <section class="band" aria-labelledby="exp-title">
+      <div class="band-inner">
+        <div class="band-col">
+          <h2 id="exp-title" class="band-title">Experience</h2>
+          <ol class="roles">
+            {careers.map((e) => (
+              <li>
+                <p class="role-when">{e.date}</p>
+                <p class="role-title"><a href={`#${e.slug}`} data-select={e.slug}>{e.title}</a></p>
+                <p class="role-line">{e.tagline}</p>
+              </li>
+            ))}
+          </ol>
+          <p class="band-foot"><a class="link-pill" href="/Colby-Baker-Resume.pdf">Full resume (PDF)<Icon name="file" size={13} /></a></p>
+        </div>
+        <div class="band-col">
+          <h2 class="band-title">Skills used at work</h2>
+          <dl class="skills">
+            {skills.map((g) => (
+              <div class="tech-row">
+                <dt>{g.label}</dt>
+                <dd>{g.items.map((i) => <span class="tag">{i}</span>)}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+        <div class="band-col">
+          <h2 class="band-title">How these previews work</h2>
+          <ul class="how">
+            <li><span class="badge badge-live">Live site</span> The real production site, embedded as is.</li>
+            <li><span class="badge badge-original">Original code, running</span> My original code, restored to run today. Anything adapted is disclosed in the project panel.</li>
+            <li><span class="badge badge-simulated">Real interface, simulated system</span> The app's own interface; system access is simulated.</li>
+            <li><span class="badge badge-contribution">My contribution</span> Only the changes I made to a shared codebase.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p><strong>Colby Baker</strong> · Seattle, WA</p>
+      <p class="footer-links">
+        <a href="https://github.com/Colbyco" rel="me">GitHub</a>
+        <a href="https://www.linkedin.com/in/bakercolby/" rel="me">LinkedIn</a>
+        <a href="/Colby-Baker-Resume.pdf">Resume</a>
+        <a href="https://github.com/Colbyco/portfolio-dsh">Site source</a>
+      </p>
+    </div>
+  </footer>
+
+  <script type="application/json" id="stage-data" set:html={JSON.stringify(stageData)} />
+  <script>
+    import "../scripts/theater.ts";
+  </script>
+</Base>

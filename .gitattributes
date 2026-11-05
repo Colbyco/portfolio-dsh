@@ -1,0 +1,11 @@
+# Keep exact bytes: vendored files are verified with Subresource Integrity hashes and some
+# preview bundles are byte-compared with their original builds.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.webp binary
+*.woff2 binary
+*.jar binary
+*.mp3 binary
+*.ico binary
+*.pdf binary

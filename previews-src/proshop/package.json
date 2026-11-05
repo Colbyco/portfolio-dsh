@@ -1,0 +1,12 @@
+{
+  "name": "proshop-contribution-viewer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Static viewer of Colby Baker's contributions to the ProShop (MERN) course project fork.",
+  "scripts": {
+    "data": "node fetch-data.mjs",
+    "build": "node build.mjs",
+    "test": "python qa/test_preview.py"
+  }
+}

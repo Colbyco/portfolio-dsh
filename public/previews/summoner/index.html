@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="Colby's Random Summoner Spell Generator" property="og:title" />
+    <meta content="Random Summoner Spell Generator" property="og:description" />
+    <title>Random Summoner Spell Generator</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link href="vendor/bootstrap-5.0.2/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link rel="stylesheet" href="preview/preview.css" />
+  </head>
+
+  <body>
+    <h1 class="text-center padding">Random Summoner Spell Generator</h1>
+
+    <div class="text-center padding">
+      <button class="btn btn-outline-primary" onclick="randomizeSpells()">Randomize</button>
+      <button class="btn btn-outline-primary" onclick="toggleAll()">Toggle All</button>
+    </div>
+
+    <div class="text-center">
+      <img id="spell-1" src="Images/Clarity.png" alt="random summoner spell" class="rounded" />
+      <img id="spell-2" src="Images/Exhaust.png" alt="random summoner spell" class="rounded" />
+    </div>
+    <div class="text-center padding">
+      <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" checked  onclick="changeMapMode('SR')" />
+      <label class="btn btn-outline-primary" for="success-outlined">Summoner's Rift</label>
+
+      <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" onclick="changeMapMode('ARAM')" />
+      <label class="btn btn-outline-primary" for="danger-outlined">ARAM</label>
+    </div>
+    <br />
+    <div class="container">
+      <div class="row g-0">
+        <div class="col"><img id="Flash" src="Images/Flash.png" onclick="toggleSpell('Flash')" alt="random summoner spell" /></div>
+        <div class="col"><img img id="Cleanse" src="Images/Cleanse.png" onclick="toggleSpell('Cleanse')" alt="random summoner spell" /></div>
+        <div class="col"><img img id="Ghost" src="Images/Ghost.png" onclick="toggleSpell('Ghost')" alt="random summoner spell" /></div>
+        <div class="col"><img img id="Ignite" src="Images/Ignite.png" onclick="toggleSpell('Ignite')" alt="random summoner spell" /></div>
+        <div class="col"><img img id="Teleport" src="Images/Teleport.png" onclick="toggleSpell('Teleport')" alt="random summoner spell" /></div>
+        <div class="col"><img img id="Smite" src="Images/Smite.png" onclick="toggleSpell('Smite')" alt="random summoner spell" /></div>
+        <div class="col"><img img id="Mark" style="filter: grayscale(100%)" src="Images/Mark.png" onclick="toggleSpell('Mark')" alt="random summoner spell" /></div>
+        <div class="col"><img img id="Exhaust" src="Images/Exhaust.png" onclick="toggleSpell('Exhaust')" alt="random summoner spell" /></div>
+        <div class="col"><img img id="Clarity" src="Images/Clarity.png" onclick="toggleSpell('Clarity')" alt="random summoner spell" /></div>
+        <div class="col"><img img id="Heal" src="Images/Heal.png" onclick="toggleSpell('Heal')" alt="random summoner spell" /></div>
+        <div class="col"><img img id="Barrier" src="Images/Barrier.png" onclick="toggleSpell('Barrier')" alt="random summoner spell" /></div>
+      </div>
+    </div>
+    <script>
+      // Preview adaptation: the original server rendered a fresh random pair on every request
+      // (GET / -> res.render('index', { spells: randomSpellGen() })). On static hosting the same
+      // app.js code runs here once per page load and fills the same two images.
+      (function () {
+        let summonerSpellsArray = ['Heal', 'Flash', 'Teleport', 'Smite', 'Cleanse', 'Ignite', 'Ghost', 'Barrier', 'Exhaust', 'Clarity'];
+
+        let lengthOfArray = summonerSpellsArray.length;
+
+        function getRandomNum() {
+            return Math.floor(Math.random() * lengthOfArray);
+        }
+
+        function pickRandomSpell() {
+            return summonerSpellsArray[getRandomNum()];
+        }
+
+        function randomSpellGen() {
+            let spellOne = pickRandomSpell();
+            let spellTwo = pickRandomSpell();
+            while (spellOne === spellTwo) {
+                spellOne = pickRandomSpell();
+            }
+            return [spellOne, spellTwo];
+        }
+        const spells = randomSpellGen();
+        document.getElementById("spell-1").src = "Images/" + spells[0] + ".png";
+        document.getElementById("spell-2").src = "Images/" + spells[1] + ".png";
+      })();
+    </script>
+    <script src="js/client.js"></script>
+    <script src="preview/keyboard.js"></script>
+  </body>
+</html>

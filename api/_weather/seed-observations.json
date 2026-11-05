@@ -1,0 +1,68 @@
+{
+  "description": "Real current-weather observations captured at build time for the Weather Database Website preview.",
+  "source": "Open-Meteo Geocoding API + Forecast API (keyless), via api/_weather/openweather-compat.cjs. Weather data by Open-Meteo.com (CC BY 4.0).",
+  "captured_by": "previews-src/weather/capture-seed.mjs",
+  "units": "imperial (temperatures in degrees F, pressure in hPa, humidity in %)",
+  "observations": [
+    {
+      "query": "Chicago",
+      "city_name": "Chicago",
+      "weather_conditions": "Clouds",
+      "temp": 51.9,
+      "feels_like": 47.6,
+      "temp_min": 50.1,
+      "temp_max": 65.6,
+      "pressure": 1006.3,
+      "humidity": 87,
+      "ts": "2026-11-05T00:58:16.453Z",
+      "latitude": 41.85003,
+      "longitude": -87.65005,
+      "country_code": "US"
+    },
+    {
+      "query": "New York",
+      "city_name": "New York",
+      "weather_conditions": "Clear",
+      "temp": 62.7,
+      "feels_like": 61.1,
+      "temp_min": 52.8,
+      "temp_max": 71.4,
+      "pressure": 1017.6,
+      "humidity": 78,
+      "ts": "2026-11-05T00:58:16.815Z",
+      "latitude": 40.71427,
+      "longitude": -74.00597,
+      "country_code": "US"
+    },
+    {
+      "query": "London",
+      "city_name": "London",
+      "weather_conditions": "Clouds",
+      "temp": 50,
+      "feels_like": 44.7,
+      "temp_min": 48.9,
+      "temp_max": 51.2,
+      "pressure": 1026.8,
+      "humidity": 71,
+      "ts": "2026-11-05T00:58:17.171Z",
+      "latitude": 51.50853,
+      "longitude": -0.12574,
+      "country_code": "GB"
+    },
+    {
+      "query": "Tokyo",
+      "city_name": "Tokyo",
+      "weather_conditions": "Clouds",
+      "temp": 56.3,
+      "feels_like": 55.4,
+      "temp_min": 51.6,
+      "temp_max": 60.3,
+      "pressure": 1017.8,
+      "humidity": 94,
+      "ts": "2026-11-05T00:58:17.523Z",
+      "latitude": 35.6895,
+      "longitude": 139.69171,
+      "country_code": "JP"
+    }
+  ]
+}

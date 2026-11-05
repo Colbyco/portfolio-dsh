@@ -1,0 +1,66 @@
+/* Neutral backdrop and a plain Windows-style frame around the app's own window content. */
+:root {
+  color-scheme: light;
+  --backdrop: #e3e3e7;
+  --note: #45454e;
+  --win-bg: #faf8fc;          /* main.cjs windowBackground(false) */
+  --title-bg: #f3f3f3;
+  --title-fg: #1b1b1b;
+  --border: rgba(0, 0, 0, .14);
+  --w: 440px;                 /* BrowserWindow width/height requested by main.cjs */
+  --h: 365px;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --backdrop: #121215;
+  --note: #b6b6c0;
+  --win-bg: #1c1a21;          /* main.cjs windowBackground(true) */
+  --border: rgba(255, 255, 255, .14);
+}
+.window.dark { --title-bg: #202020; --title-fg: #ffffff; }
+.window.light { --title-bg: #f3f3f3; --title-fg: #1b1b1b; }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { background: var(--backdrop); color: var(--note); font: 12px/1.5 "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif; }
+
+.stage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px 16px;
+}
+.window {
+  width: var(--w);
+  max-width: 100%;
+  flex: none;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--win-bg);
+  box-shadow: 0 0 0 1px var(--border), 0 12px 32px rgba(0, 0, 0, .22), 0 2px 6px rgba(0, 0, 0, .12);
+}
+.titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding-left: 10px;
+  background: var(--title-bg);
+  color: var(--title-fg);
+  font-size: 12px;
+  user-select: none;
+}
+.titlebar .title { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.controls { display: flex; flex: none; }
+.controls svg { display: block; fill: none; stroke: currentColor; stroke-width: 1; opacity: .85; }
+iframe { display: block; width: 100%; height: var(--h); border: 0; background: var(--win-bg); }
+.note { max-width: var(--w); margin: 0; text-align: center; }
+.note span:not(:empty)::before { content: " "; }
+
+/* Narrow screens: the window fills the width (and grows with its content instead of scrolling). */
+body.narrow .stage { justify-content: flex-start; padding: 0; gap: 0; }
+body.narrow .window { width: 100%; border-radius: 0; box-shadow: none; }
+body.narrow .note { max-width: none; padding: 10px 16px 16px; }

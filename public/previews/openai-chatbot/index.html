@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenAI ChatBot</title>
+  <script type="module" crossorigin src="./assets/index.f0e7611c.js"></script>
+  <link rel="stylesheet" href="./assets/index.c21b6f53.css">
+</head>
+
+<body>
+    <!-- [preview] Portfolio bar: separate from the original app below. See PREVIEW.md. -->
+    <div id="portfolio-bar" role="region" aria-label="Portfolio preview note">
+        <p class="pb-text"><span class="pb-chip">Preview</span> text-davinci-002 was retired by OpenAI. To chat live, paste your own OpenAI API key (kept in this tab's memory only, sent only to api.openai.com).</p>
+        <form class="pb-form" id="portfolio-key-form" autocomplete="off" novalidate>
+            <label class="pb-sr" for="portfolio-key">OpenAI API key</label>
+            <input id="portfolio-key" name="portfolio-key" type="password" placeholder="sk-..." autocomplete="off"
+                spellcheck="false" autocapitalize="off" data-1p-ignore data-lpignore="true" />
+            <button type="submit" class="pb-btn pb-btn-primary">Use</button>
+            <button type="button" class="pb-btn" id="portfolio-key-clear">Clear</button>
+            <span class="pb-status" id="portfolio-key-status" role="status" aria-live="polite">No key</span>
+        </form>
+    </div>
+    <!-- [/preview] -->
+    <div id="app"></div>
+    
+    
+</body>
+
+</html>

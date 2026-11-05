@@ -1,0 +1,18 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.env*
+*.log
+previews-src/*/node_modules/
+previews-src/*/dist/
+previews-src/*/build/
+previews-src/*/target/
+qa/tmp/
+# Local QA evidence (screenshots, raw Lighthouse reports) stays out of the public repo.
+qa/**/*.png
+qa/**/*.jpg
+qa/lighthouse/
+qa/compare/
+qa/shots/
+__pycache__/

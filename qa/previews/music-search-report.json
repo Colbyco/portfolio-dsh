@@ -1,0 +1,166 @@
+{
+  "url": "http://127.0.0.1:4440/previews/music-search/",
+  "checks": {
+    "native: sample run exits 0 with no stderr": {
+      "ok": true,
+      "detail": "exit 0"
+    },
+    "native: 12 files reported": {
+      "ok": true,
+      "detail": "12"
+    },
+    "prompt shown": {
+      "ok": true,
+      "detail": ""
+    },
+    "stdin enabled": {
+      "ok": true,
+      "detail": ""
+    },
+    "browser output == native output (sample library)": {
+      "ok": true,
+      "detail": "after mapping /files/sample-music -> sample-music, \\ -> /, CRLF -> LF"
+    },
+    "browser stderr empty": {
+      "ok": true,
+      "detail": "''"
+    },
+    "echo of typed path shown": {
+      "ok": true,
+      "detail": ""
+    },
+    "Run again via keyboard re-prompts": {
+      "ok": true,
+      "detail": ""
+    },
+    "missing folder: same error text as native": {
+      "ok": true,
+      "detail": "browser 'Error reading directory: /files/does-not-exist' vs native 'Error reading directory: does-not-exist'"
+    },
+    "picked files scanned from /files/your-mp3s": {
+      "ok": true,
+      "detail": "2 files"
+    },
+    "non-MP3 pick left out with a note": {
+      "ok": true,
+      "detail": ""
+    },
+    "transcript reads 'Enter path to directory: /files/your-mp3s'": {
+      "ok": true,
+      "detail": ""
+    },
+    "pick at the prompt: note above, prompt + path intact": {
+      "ok": true,
+      "detail": " | # Copied 1 MP3 file into /files/your-mp3s (read in your browser, not uploaded). | Enter path to directory: /files/your-mp3s | Directory: /files/your-mp3s | File: /files/your-mp3s/Nocturne Op. 9 No. 2.mp3 | ID3v1 Metadata: | Title: Nocturne Op. 9 No. 2 | Artist: Frederic Chopin | Album: Sample Library - Romantic | "
+    },
+    "every sample MP3 decodes in Chrome (0.3-1.0 s)": {
+      "ok": true,
+      "detail": "0.60, 0.71, 0.71, 0.60, 0.81, 0.60, 0.60, 0.90, 0.71, 0.79, 0.60, 0.90"
+    },
+    "theme message switches to light": {
+      "ok": true,
+      "detail": "rgb(246, 247, 249)"
+    },
+    "no horizontal scroll at 360x560": {
+      "ok": true,
+      "detail": "scrollWidth 360"
+    },
+    "no horizontal scroll at 390x720": {
+      "ok": true,
+      "detail": "scrollWidth 390"
+    },
+    "no horizontal scroll at 1400x900": {
+      "ok": true,
+      "detail": "scrollWidth 1400"
+    },
+    "keyboard reaches all controls": {
+      "ok": true,
+      "detail": "add-files > add-folder > summary:Sample library (12 files > summary:Original Java source & w > body:Music Search App \u00b7 Java  > a:CheerpJ > clear > out > line > send > use-sample > add-files > add-folder > summary:Sample library (12 files"
+    },
+    "source viewer shows the original MetadataExtractor.java": {
+      "ok": true,
+      "detail": ""
+    },
+    "source tabs switch with arrow keys": {
+      "ok": true,
+      "detail": ""
+    },
+    "library tree lists 12 files": {
+      "ok": true,
+      "detail": ""
+    },
+    "CDN blocked: error message + retry shown": {
+      "ok": true,
+      "detail": ""
+    },
+    "works inside a same-origin iframe (stage) + theme from parent": {
+      "ok": true,
+      "detail": "12 files"
+    }
+  },
+  "timings": {
+    "cold_first_usable_ms": 2117,
+    "cold_steps_ms": {
+      "runtime": 49,
+      "jvm": 141,
+      "files": 1893,
+      "main": 1967
+    },
+    "cold_first_contentful_paint_ms": 132,
+    "sample_scan_ms": 574,
+    "warm_first_usable_ms": [
+      1506,
+      1452,
+      1367
+    ],
+    "warm_first_usable_median_ms": 1452,
+    "warm_first_contentful_paint_ms": 24
+  },
+  "payload": {
+    "cold_session_bytes_by_origin": {
+      "127.0.0.1:4440": {
+        "requests": 36,
+        "bytes": 273523
+      },
+      "cjrtnc.leaningtech.com": {
+        "requests": 30,
+        "bytes": 11331802
+      }
+    },
+    "failed_requests": []
+  },
+  "native_java": "openjdk version \"25.0.2\" 2026-01-20 LTS",
+  "sample_durations_s": {
+    "Baroque/Antonio Vivaldi/Spring - I. Allegro.mp3": 0.601,
+    "Baroque/George Frideric Handel/Water Music - Alla Hornpipe.mp3": 0.705,
+    "Baroque/Johann Sebastian Bach/01 Prelude in C major, BWV 846.mp3": 0.705,
+    "Baroque/Johann Sebastian Bach/02 Brandenburg Concerto No. 3 - Allegro.mp3": 0.6,
+    "Classical/Ludwig van Beethoven/Fur Elise.mp3": 0.81,
+    "Classical/Ludwig van Beethoven/Symphony No. 5 - I. Allegro con brio.mp3": 0.6,
+    "Classical/Wolfgang Amadeus Mozart/Eine kleine Nachtmusik - I. Allegro.mp3": 0.6,
+    "Classical/Wolfgang Amadeus Mozart/Rondo alla Turca.mp3": 0.9,
+    "Romantic/Antonin Dvorak/Symphony No. 9 - II. Largo.mp3": 0.705,
+    "Romantic/Frederic Chopin/Nocturne Op. 9 No. 2.mp3": 0.792,
+    "Romantic/Pyotr Ilyich Tchaikovsky/Dance of the Sugar Plum Fairy.mp3": 0.601,
+    "Untitled voice memo.mp3": 0.9
+  },
+  "console_errors_cold": [],
+  "tab_order": [
+    "add-files",
+    "add-folder",
+    "summary:Sample library (12 files",
+    "summary:Original Java source & w",
+    "body:Music Search App \u00b7 Java ",
+    "a:CheerpJ",
+    "clear",
+    "out",
+    "line",
+    "send",
+    "use-sample",
+    "add-files",
+    "add-folder",
+    "summary:Sample library (12 files"
+  ],
+  "console_errors_all": [],
+  "failures": []
+}

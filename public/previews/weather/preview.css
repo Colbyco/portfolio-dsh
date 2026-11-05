@@ -1,0 +1,55 @@
+/* Weather Database Website preview: additions loaded AFTER the original css/main.css and
+   Bootstrap 5.0.2. The original stylesheet is unchanged; these rules only style the disclosure
+   note and stop the fixed-percentage form and the 9-column table from overflowing narrow stages. */
+.preview-note {
+    max-width: 46rem;
+    margin: 2rem auto 0;
+    padding: 0 1rem;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: #555;
+    text-align: center;
+}
+
+.preview-note a {
+    color: #3F51B5;
+}
+
+.preview-error {
+    max-width: 30rem;
+    margin: 3rem auto 0;
+    padding: 0 1rem;
+    text-align: center;
+}
+
+.preview-error .button {
+    display: inline-block;
+    width: auto;
+    padding: 5px 1.5rem;
+    text-decoration: none;
+}
+
+@media (max-width: 900px) {
+    .input {
+        width: 90%;
+        max-width: 22rem;
+    }
+}
+
+@media (max-width: 760px) {
+    .button {
+        width: 50%;
+    }
+
+    .styled-table {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        overflow-x: auto;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        white-space: nowrap;
+    }
+}

@@ -1,0 +1,4 @@
+{
+  "endpoint": "https://reports.preview.invalid/simulated",
+  "anonKey": "not-used-in-the-preview"
+}

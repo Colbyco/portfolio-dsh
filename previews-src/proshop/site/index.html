@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ProShop course project · Colby Baker's contributions</title>
+  <meta name="color-scheme" content="dark light" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23161a20'/%3E%3Cpath d='M4 5h3M4 8h8M4 11h5' stroke='%2379b0ff' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#viewer">Skip to diff viewer</a>
+  <header class="top">
+    <div class="top-text">
+      <h1>ProShop course project <span class="h-sub">· MERN · Redux Toolkit · April 2024</span></h1>
+      <p class="credit">Built on Brad Traversy's ProShop course project (<a href="https://github.com/bradtraversy/proshop-v2" target="_blank" rel="noopener">bradtraversy/proshop-v2</a>); Colby's contributions are shown below.</p>
+    </div>
+    <button type="button" class="theme-btn" id="theme-btn" aria-label="Switch to light theme" title="Toggle light/dark theme">
+      <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <section class="cards" id="cards" aria-label="Contribution summary">
+      <p class="loading">Loading contribution data…</p>
+    </section>
+
+    <section class="viewer" id="viewer" aria-labelledby="viewer-title" tabindex="-1">
+      <div class="viewer-head">
+        <h2 id="viewer-title" class="sr">Changed files and diffs</h2>
+        <div class="tabs" role="tablist" aria-label="Change set" id="tabs"></div>
+        <div class="controls">
+          <div class="seg" role="group" aria-label="Diff layout">
+            <button type="button" data-mode="unified" aria-pressed="true">Unified</button>
+            <button type="button" data-mode="split" aria-pressed="false">Split</button>
+          </div>
+          <label class="wrap-toggle"><input type="checkbox" id="wrap" /> Wrap lines</label>
+        </div>
+      </div>
+      <div class="viewer-body" id="viewer-panel" role="tabpanel">
+        <nav class="tree" id="tree" aria-label="Changed files"></nav>
+        <div class="diff" id="diff" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="history" id="history" aria-labelledby="history-title">
+      <h2 id="history-title">Colby's commits in the fork <span class="muted" id="history-sub"></span></h2>
+      <ol class="commits" id="commits"></ol>
+    </section>
+  </main>
+
+  <footer class="foot" id="foot"></footer>
+</body>
+</html>

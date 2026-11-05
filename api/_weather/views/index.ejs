@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Weather Demo</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="/previews/weather/vendor/bootstrap-5.0.2/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="/previews/weather/preview.css">
+</head>
+
+<body>
+    <form method="post" action="" class="center input">
+        <label for="city_name" class="form-label">Enter a city name:</label><br>
+        <input autofocus type="text" id="city_name" name="city_name" placeholder="Chicago" class="form-control"><br>
+        <button type="submit" class="button btn-primary">Submit</button>
+    </form>
+    
+    <br>
+            <table class="styled-table";>
+                <tr>
+                    <th>City Name</th>
+                    <th>Weather Condition</th>
+                    <th>Temperature</th>
+                    <th>Feels Like Temperature</th>
+                    <th>Minimum Temperature</th>
+                    <th>Maximum Temperature</th>
+                    <th>Pressure</th>
+                    <th>Humudity</th>
+                    <th>Time Searched</th>
+                </tr>
+
+                <% for(let i = 0; i < data.length; i++) { %>
+                    <tr>
+                        <td><%= data[i].city_name %></td>
+                        <td><%= data[i].weather_conditions %></td>
+                        <td><%= data[i].temp %>° F</td>
+                        <td><%= data[i].feels_like %>° F</td>
+                        <td><%= data[i].temp_min %>° F</td>
+                        <td><%= data[i].temp_max %>° F</td>
+                        <td><%= data[i].pressure %> hPa</td>
+                        <td><%= data[i].humidity %>%</td>
+                        <td><%= data[i].ts.toLocaleString('en-US') %> UTC</td>
+                    </tr>
+                <% } %>
+            </table>
+    <p class="preview-note">Portfolio preview of the 2021 app: lookups now use the keyless Open-Meteo API (mapped to the original OpenWeatherMap fields) and are stored in an in-memory PostgreSQL that resets every hour; the first rows are fetched automatically at each reset. Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a>.</p>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Library Relational Database API · live console</title>
+<meta name="color-scheme" content="dark light">
+<style>/*@@CSS@@*/</style>
+</head>
+<body>
+<a class="skip" href="#builder">Skip to the request builder</a>
+<header class="top">
+  <div class="top-row">
+    <h1>Library Relational Database API <span class="meta"><span class="dot">· </span>Express · Knex · PostgreSQL · July 2022</span></h1>
+    <button id="theme" class="icon-btn" type="button" aria-label="Switch to light theme" title="Switch theme">
+      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1z"/></svg>
+    </button>
+  </div>
+  <p class="lede">Requests run against the original 2022 route code on a sandboxed PostgreSQL (PGlite) that resets every 30 minutes.</p>
+  <p class="shim-note" id="shim-note" hidden><span class="tag">shim</span> One added migration gives <code>author_id</code>/<code>book_id</code> defaults and adds <code>book.owned</code>/<code>on_hand</code>, which the original queries use but the original migrations never created.</p>
+</header>
+
+<main class="grid">
+  <nav class="panel endpoints" aria-labelledby="ep-h">
+    <h2 id="ep-h">Endpoints <span class="count" id="ep-count"></span></h2>
+    <ul id="ep-list" class="ep-list"></ul>
+  </nav>
+
+  <section class="panel builder" id="builder" aria-labelledby="req-h" tabindex="-1">
+    <h2 id="req-h">Request</h2>
+    <form id="req-form" novalidate>
+      <div class="req-line">
+        <span class="badge" id="req-method">GET</span>
+        <code class="req-url" id="req-url"></code>
+      </div>
+      <p class="req-desc" id="req-desc"></p>
+      <div id="params" class="fields"></div>
+      <div class="field">
+        <label for="query">Query string <span class="opt">optional, ignored by these routes</span></label>
+        <input id="query" name="query" type="text" autocomplete="off" spellcheck="false" placeholder="?key=value">
+      </div>
+      <div class="field" id="body-field">
+        <label for="body">JSON body</label>
+        <textarea id="body" name="body" rows="7" spellcheck="false" autocomplete="off" aria-describedby="body-err"></textarea>
+        <p class="field-err" id="body-err" role="alert"></p>
+      </div>
+      <div class="actions">
+        <button type="submit" class="primary" id="send">Send <kbd>Ctrl</kbd><kbd>Enter</kbd></button>
+        <button type="button" class="ghost" id="example">Reset example</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="panel response" aria-labelledby="res-h">
+    <h2 id="res-h">Response</h2>
+    <div class="res-meta" id="res-meta" aria-live="polite"><span class="muted">Pick an endpoint and press Send.</span></div>
+    <pre class="code" id="res-body" tabindex="0" aria-label="Response body"></pre>
+  </section>
+
+  <section class="panel schema" aria-labelledby="schema-h">
+    <h2 id="schema-h">Schema <span class="muted small">generated from the original migrations</span></h2>
+    <div class="erd" id="erd"></div>
+    <ul class="rels" id="rels"></ul>
+    <p class="legend"><b>PK</b> primary key · <b>FK</b> foreign key · <b>NN</b> not null · <span class="tag">shim</span> added by the preview, not in the 2022 migrations</p>
+  </section>
+</main>
+<footer class="foot">The original project is an API only; this console was built for the portfolio preview.</footer>
+<script>/*@@DATA@@*/</script>
+<script>/*@@JS@@*/</script>
+</body>
+</html>

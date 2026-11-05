@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://colby-portfolio-dsh.vercel.app/sitemap.xml

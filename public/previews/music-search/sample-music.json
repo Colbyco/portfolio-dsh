@@ -1,0 +1,93 @@
+{
+  "root": "sample-music",
+  "files": [
+    {
+      "path": "Baroque/Antonio Vivaldi/Spring - I. Allegro.mp3",
+      "size": 9741,
+      "tags": [
+        "ID3v1"
+      ]
+    },
+    {
+      "path": "Baroque/George Frideric Handel/Water Music - Alla Hornpipe.mp3",
+      "size": 14514,
+      "tags": [
+        "ID3v1",
+        "ID3v2.3"
+      ]
+    },
+    {
+      "path": "Baroque/Johann Sebastian Bach/01 Prelude in C major, BWV 846.mp3",
+      "size": 17354,
+      "tags": [
+        "ID3v1",
+        "ID3v2.3"
+      ]
+    },
+    {
+      "path": "Baroque/Johann Sebastian Bach/02 Brandenburg Concerto No. 3 - Allegro.mp3",
+      "size": 19499,
+      "tags": [
+        "ID3v2.3"
+      ]
+    },
+    {
+      "path": "Classical/Ludwig van Beethoven/Fur Elise.mp3",
+      "size": 13524,
+      "tags": [
+        "ID3v1",
+        "ID3v2.3"
+      ]
+    },
+    {
+      "path": "Classical/Ludwig van Beethoven/Symphony No. 5 - I. Allegro con brio.mp3",
+      "size": 24296,
+      "tags": [
+        "ID3v2.3"
+      ]
+    },
+    {
+      "path": "Classical/Wolfgang Amadeus Mozart/Eine kleine Nachtmusik - I. Allegro.mp3",
+      "size": 14692,
+      "tags": [
+        "ID3v2.4"
+      ]
+    },
+    {
+      "path": "Classical/Wolfgang Amadeus Mozart/Rondo alla Turca.mp3",
+      "size": 11232,
+      "tags": [
+        "ID3v1",
+        "ID3v2.3"
+      ]
+    },
+    {
+      "path": "Romantic/Antonin Dvorak/Symphony No. 9 - II. Largo.mp3",
+      "size": 11836,
+      "tags": [
+        "ID3v1",
+        "ID3v2.3"
+      ]
+    },
+    {
+      "path": "Romantic/Frederic Chopin/Nocturne Op. 9 No. 2.mp3",
+      "size": 6872,
+      "tags": [
+        "ID3v1",
+        "ID3v2.3"
+      ]
+    },
+    {
+      "path": "Romantic/Pyotr Ilyich Tchaikovsky/Dance of the Sugar Plum Fairy.mp3",
+      "size": 8539,
+      "tags": [
+        "ID3v1"
+      ]
+    },
+    {
+      "path": "Untitled voice memo.mp3",
+      "size": 3600,
+      "tags": []
+    }
+  ]
+}
