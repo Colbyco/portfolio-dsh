@@ -16,3 +16,5 @@ qa/lighthouse/
 qa/compare/
 qa/shots/
 __pycache__/
+
+.vercel

@@ -411,6 +411,31 @@ select(initial, { load: false, updateHash: false });
 const start = () => select(current, { load: true, updateHash: false });
 if (document.readyState === "complete") setTimeout(start, 50);
 else addEventListener("load", () => setTimeout(start, 50), { once: true });
+// Server previews run on serverless functions that boot Postgres (PGlite) on a cold start
+// (~5-7 s). Warm them quietly once the page is idle, and again when a visitor points at them.
+const WARM: Record<string, string> = { weather: "/api/weather/", library: "/api/library/authors" };
+const warmed = new Map<string, number>();
+function warm(slug: string) {
+  const url = WARM[slug];
+  const last = warmed.get(slug) ?? 0;
+  if (!url || Date.now() - last < 120000) return;
+  if ((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) return;
+  warmed.set(slug, Date.now());
+  fetch(url, { method: slug === "weather" ? "HEAD" : "GET", cache: "no-store" }).catch(() => {});
+}
+const idle = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+addEventListener(
+  "load",
+  () => (idle ? idle(() => Object.keys(WARM).forEach(warm), { timeout: 6000 }) : setTimeout(() => Object.keys(WARM).forEach(warm), 3000)),
+  { once: true },
+);
+tabs.forEach((t) => {
+  const slug = t.dataset.slug!;
+  if (!WARM[slug]) return;
+  t.addEventListener("pointerenter", () => warm(slug));
+  t.addEventListener("focus", () => warm(slug));
+});
+
 addEventListener("hashchange", () => {
   const slug = location.hash.slice(1);
   if (bySlug.has(slug) && slug !== current) select(slug, { updateHash: false });
