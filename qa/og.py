@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 root = Path(__file__).resolve().parent.parent
 posters = root / "public" / "posters"
 font = (root / "public" / "fonts" / "inter-latin-wght.woff2").read_bytes()
-pick = ["aspicio", "summoner", "proshop", "library", "weather", "spotify-classic-lyrics"]
+pick = ["aspicio", "spotify-classic-lyrics", "music-search", "openai-chatbot"]
 thumbs = [p for p in (posters / f"{s}-800.webp" for s in pick) if p.exists()][:4]
 
 def data_uri(p, mime):
