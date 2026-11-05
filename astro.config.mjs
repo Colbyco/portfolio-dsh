@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://colby-portfolio-dsh.vercel.app",
+  site: "https://colbybaker.dev",
   output: "static",
   trailingSlash: "ignore",
   build: { inlineStylesheets: "always" },

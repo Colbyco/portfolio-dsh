@@ -4,7 +4,7 @@ Every project I've built since 2021, playable in one page. Pick a project in the
 runs in the center stage: the real Aspicio site, older apps restored to run their original code,
 and my roles at CVS Health with their measured impact.
 
-**Live:** https://colby-portfolio-dsh.vercel.app
+**Live:** https://colbybaker.dev
 
 | Project | Year | What runs in the stage |
 |---|---|---|

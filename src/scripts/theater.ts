@@ -5,8 +5,8 @@ type Mode = "live" | "original" | "simulated" | "contribution" | "career";
 interface StageEntry {
   slug: string;
   title: string;
-  date: string;
   kind: "project" | "career";
+  tier: "main" | "school";
   mode: Mode;
   modeLabel: string;
   url: string | null;
@@ -67,16 +67,20 @@ const loadingText = $("[data-loading-text]");
 const loadingSlow = $("[data-loading-slow]");
 const loadingOpen = $<HTMLAnchorElement>("[data-loading-open]");
 const addressText = $("[data-address-text]");
-const addressIcon = $(".address-icon") as unknown as SVGElement;
 const badge = $("[data-badge]");
 const openLink = $<HTMLAnchorElement>("[data-open]");
-const reloadBtn = $<HTMLButtonElement>("[data-reload]");
 const expandBtn = $<HTMLButtonElement>("[data-expand]");
 const prevBtn = $<HTMLButtonElement>("[data-prev]");
 const nextBtn = $<HTMLButtonElement>("[data-next]");
 const prevLabel = $("[data-prev-label]");
 const nextLabel = $("[data-next-label]");
-const pos = $("[data-pos]");
+const railToggle = $<HTMLButtonElement>("[data-rail-toggle]");
+const railItems = $("[data-rail-items]");
+function setGroupOpen(open: boolean) {
+  railToggle.setAttribute("aria-expanded", String(open));
+  railItems.hidden = !open;
+}
+railToggle.addEventListener("click", () => setGroupOpen(railItems.hidden));
 
 const MAX_FRAMES = 4; // keep recently viewed previews alive for instant switching
 const frames = new Map<string, { el: HTMLIFrameElement; loaded: boolean; used: number }>();
@@ -90,13 +94,6 @@ addEventListener("keydown", () => (interacted = true), { once: true, capture: tr
 let tabFocusedAt = 0;
 let clock = 0;
 
-const ICONS: Record<Mode, string> = {
-  live: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
-  original: '<path d="m9 8-5 4 5 4"/><path d="m15 8 5 4-5 4"/>',
-  simulated: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
-  contribution: '<circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7"/><path d="M18 11.5c0 3.5-6 2.5-10.5 5"/>',
-  career: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><path d="M3 13h18"/>',
-};
 
 function absolute(url: string) {
   return new URL(url, location.href).href;
@@ -223,12 +220,10 @@ function render(entry: StageEntry, { load = true } = {}) {
   // Frame chrome
   addressText.textContent = routeOf(entry)?.address ?? entry.address;
   renderRoutes(entry);
-  addressIcon.innerHTML = ICONS[entry.mode];
-  badge.className = `badge badge-${entry.mode}`;
   badge.textContent = entry.modeLabel;
   frame.dataset.mode = entry.mode;
   const hasUrl = Boolean(entry.url);
-  reloadBtn.disabled = !hasUrl;
+  expandBtn.disabled = !hasUrl;
   openLink.hidden = !hasUrl;
   if (hasUrl) openLink.href = absolute(urlFor(entry)!);
 
@@ -259,17 +254,16 @@ function render(entry: StageEntry, { load = true } = {}) {
   const details = $(".details");
   details.scrollTop = 0;
 
-  // Prev / next
+  // Newer / older (the list runs newest first)
   const i = order.indexOf(entry.slug);
   const prev = bySlug.get(order[i - 1]);
   const next = bySlug.get(order[i + 1]);
   prevBtn.disabled = !prev;
   nextBtn.disabled = !next;
-  prevLabel.textContent = prev ? prev.title : "Start";
-  nextLabel.textContent = next ? next.title : "End";
-  prevBtn.setAttribute("aria-label", prev ? `Previous: ${prev.title}` : "No previous project");
-  nextBtn.setAttribute("aria-label", next ? `Next: ${next.title}` : "No next project");
-  pos.textContent = `${i + 1} of ${order.length}`;
+  prevLabel.textContent = prev ? prev.title : "Newest";
+  nextLabel.textContent = next ? next.title : "Oldest";
+  prevBtn.setAttribute("aria-label", prev ? `Newer: ${prev.title}` : "This is the newest entry");
+  nextBtn.setAttribute("aria-label", next ? `Older: ${next.title}` : "This is the oldest entry");
 }
 
 /** Scroll only the rail (never the page) so the selected tab is visible. */
@@ -286,6 +280,8 @@ function select(slug: string, opts: { focus?: boolean; load?: boolean; updateHas
   const entry = bySlug.get(slug);
   if (!entry) return;
   current = slug;
+  // School projects live in a collapsed group; open it when one is selected.
+  if (entry.tier === "school" && railItems.hidden) setGroupOpen(true);
   tabs.forEach((t) => {
     const on = t.dataset.slug === slug;
     t.setAttribute("aria-selected", String(on));
@@ -301,21 +297,24 @@ function select(slug: string, opts: { focus?: boolean; load?: boolean; updateHas
 }
 
 // Rail keyboard support (manual activation: arrows move focus, Enter/Space selects).
+// Tabs inside the collapsed school-projects group are skipped until the group is opened.
+const visibleTabs = () => tabs.filter((t) => t.offsetParent !== null);
 tablist.addEventListener("keydown", (ev) => {
-  const idx = tabs.indexOf(document.activeElement as HTMLButtonElement);
+  const vis = visibleTabs();
+  const idx = vis.indexOf(document.activeElement as HTMLButtonElement);
   if (idx < 0) return;
   const horizontal = tablist.getAttribute("aria-orientation") === "horizontal";
   const back = horizontal ? "ArrowLeft" : "ArrowUp";
   const fwd = horizontal ? "ArrowRight" : "ArrowDown";
   let target = -1;
   if (ev.key === back) target = Math.max(0, idx - 1);
-  else if (ev.key === fwd) target = Math.min(tabs.length - 1, idx + 1);
+  else if (ev.key === fwd) target = Math.min(vis.length - 1, idx + 1);
   else if (ev.key === "Home") target = 0;
-  else if (ev.key === "End") target = tabs.length - 1;
+  else if (ev.key === "End") target = vis.length - 1;
   if (target > -1) {
     ev.preventDefault();
-    tabs.forEach((t, i) => (t.tabIndex = i === target ? 0 : -1));
-    tabs[target].focus();
+    tabs.forEach((t) => (t.tabIndex = t === vis[target] ? 0 : -1));
+    vis[target].focus();
   }
 });
 tabs.forEach((t) =>
@@ -325,7 +324,7 @@ tabs.forEach((t) =>
   }),
 );
 
-// Anything with data-select jumps to an entry (intro link, "Start from 2021", experience list).
+// Anything with data-select jumps to an entry (intro link, project cards, experience list).
 document.addEventListener("click", (ev) => {
   const el = (ev.target as Element).closest<HTMLElement>("[data-select]");
   if (!el) return;
@@ -343,7 +342,8 @@ nextBtn.addEventListener("click", () => {
   if (i < order.length - 1) select(order[i + 1]);
 });
 
-reloadBtn.addEventListener("click", () => {
+// "Try again" in the slow-loading note reloads the preview.
+$("[data-retry]").addEventListener("click", () => {
   const entry = bySlug.get(current);
   const rec = frames.get(current);
   if (!entry?.url || !rec) return;
@@ -351,7 +351,6 @@ reloadBtn.addEventListener("click", () => {
   showLoading(entry);
   rec.el.src = urlFor(entry)!;
 });
-$("[data-retry]").addEventListener("click", () => reloadBtn.click());
 
 // Full screen: native API when available, otherwise an expanded overlay.
 expandBtn.addEventListener("click", async () => {

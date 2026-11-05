@@ -31,8 +31,8 @@ h1 {{ font-size: 66px; line-height: 1; letter-spacing: -0.04em; font-weight: 780
   border: 1px solid #323844; box-shadow: 0 18px 40px -16px rgba(0,0,0,.8); }}
 </style></head><body>
 <div class="copy"><div><div class="mono">CB</div><h1>Colby Baker</h1>
-<p class="role">Software engineer at CVS Health.<br>Healthcare APIs and AI agent services.</p></div>
-<div><p class="pitch">Every project since 2021,<br>live in one page.</p><p class="url">colby-portfolio-dsh.vercel.app</p></div></div>
+<p class="role">Software engineer at CVS Health.<br>Backend APIs and LLM systems for healthcare.</p></div>
+<div><p class="pitch">Every project runs live on the page,<br>with the stack behind each one.</p><p class="url">colbybaker.dev</p></div></div>
 <div class="wall">{imgs}</div></body></html>"""
 
 with sync_playwright() as p:

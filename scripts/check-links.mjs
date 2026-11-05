@@ -1,6 +1,6 @@
 // Check every link and preview URL on the page.
-// Usage: node scripts/check-links.mjs [base]   (default: https://colby-portfolio-dsh.vercel.app)
-const base = (process.argv[2] || "https://colby-portfolio-dsh.vercel.app").replace(/\/$/, "");
+// Usage: node scripts/check-links.mjs [base]   (default: https://colbybaker.dev)
+const base = (process.argv[2] || "https://colbybaker.dev").replace(/\/$/, "");
 const html = await (await fetch(base + "/")).text();
 
 const hrefs = [...html.matchAll(/href="([^"#][^"]*)"/g)].map((m) => m[1]);

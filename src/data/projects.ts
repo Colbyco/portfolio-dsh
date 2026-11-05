@@ -18,6 +18,8 @@ export interface Metric {
 export interface Entry {
   slug: string;
   kind: "project" | "career";
+  /** "main" entries lead the rail and the Projects grid; "school" entries sit in a collapsed group. */
+  tier: "main" | "school";
   year: number;
   /** Header line, left part: the date. */
   date: string;
@@ -30,6 +32,8 @@ export interface Entry {
   tagline: string;
   summary: string;
   built: string[];
+  /** The 3-4 technologies to show at a glance (rail, project cards). */
+  keyTech: string[];
   tech: TechGroup[];
   preview: {
     mode: PreviewMode;
@@ -49,265 +53,21 @@ export interface Entry {
 }
 
 export const MODE_LABEL: Record<PreviewMode, string> = {
-  live: "Live site",
-  original: "Original code, running",
-  simulated: "Real interface, simulated system",
-  contribution: "My contribution",
-  career: "Professional work",
+  live: "Live",
+  original: "Original code",
+  simulated: "Simulated",
+  contribution: "My commits",
+  career: "Role",
 };
 
 export const entries: Entry[] = [
   {
-    slug: "summoner",
-    kind: "project",
-    year: 2021,
-    date: "July 2021",
-    stage: "Summer after 1st year of college",
-    title: "Summoner Spell Generator",
-    tagline: "League of Legends spell randomizer",
-    summary:
-      "A randomizer for League of Legends summoner spells: choose a map mode, switch off the spells you don't want, and roll a pair for your next game.",
-    built: [
-      "Express server that renders an EJS page with a random opening pair, never the same spell twice.",
-      "Client-side rules: Mark only exists in ARAM, and spells you switch off never come up.",
-      "Bootstrap 5 layout around the original spell artwork.",
-    ],
-    tech: [
-      { label: "Frontend", items: ["JavaScript", "EJS", "Bootstrap 5"] },
-      { label: "Backend", items: ["Node.js", "Express"] },
-    ],
-    preview: {
-      mode: "original",
-      url: "/previews/summoner/",
-      address: "summoner-spell-generator · 2021 build",
-      note: "The original 2021 page, styles and script, served as static files. The server's random first roll now runs in the browser using the same functions, and the spell icons gained keyboard support.",
-    },
-    links: [{ label: "Source code", href: "https://github.com/Colbyco/summoner-spell-generator" }],
-  },
-  {
-    slug: "weather",
-    kind: "project",
-    year: 2021,
-    date: "August 2021",
-    stage: "Summer after 1st year of college",
-    title: "Weather Database",
-    tagline: "City weather lookups saved to Postgres",
-    summary:
-      "Look up a city's current weather and save it as an observation. A server-rendered table keeps every earlier search.",
-    built: [
-      "Express routes that call a weather API and store each result in PostgreSQL.",
-      "Knex migrations for the schema, run automatically on every Heroku deploy.",
-      "EJS and Bootstrap results table of all saved observations.",
-    ],
-    tech: [
-      { label: "Backend", items: ["Node.js", "Express", "Axios"] },
-      { label: "Data", items: ["PostgreSQL", "Knex migrations"] },
-      { label: "Frontend", items: ["EJS", "Bootstrap 5"] },
-    ],
-    preview: {
-      mode: "original",
-      url: "/api/weather/",
-      address: "weather-database-website · 2021 server code",
-      note: "The original 2021 Express and EJS app runs live on a serverless function, on in-memory PostgreSQL (PGlite) built by its original migrations. Lookups use keyless Open-Meteo in place of the keyed OpenWeatherMap call, and the data resets every hour.",
-    },
-    links: [{ label: "Source code", href: "https://github.com/Colbyco/weather-database-website" }],
-  },
-  {
-    slug: "openai-chatbot",
-    kind: "project",
-    year: 2022,
-    date: "June 2022",
-    stage: "Summer after 2nd year of college",
-    title: "OpenAI Chatbot",
-    tagline: "A chat UI on GPT-3.5, before ChatGPT",
-    summary:
-      "A chat interface on OpenAI's text-davinci-002 completion model, built five months before ChatGPT launched.",
-    built: [
-      "Prompt engineering that makes a completion model behave like a chat partner.",
-      "Vue 3 and Vuetify 3 single-page app built with Vite, with temperature and length controls in a settings drawer.",
-      "Bring-your-own-key design: the key stays in memory and is validated against the API before chatting.",
-      "Deployed on Cloudflare Pages, where the 2022 build is still online.",
-    ],
-    tech: [
-      { label: "Frontend", items: ["Vue 3", "Vuetify 3", "Vite"] },
-      { label: "AI", items: ["OpenAI API", "text-davinci-002"] },
-      { label: "Hosting", items: ["Cloudflare Pages"] },
-    ],
-    preview: {
-      mode: "original",
-      url: "/previews/openai-chatbot/",
-      address: "openai-chat-bot · 2022 build",
-      note: "Rebuilt from the 2022 lockfile; unmodified, it is byte-identical to the live 2022 deployment. OpenAI shut text-davinci-002 down in January 2024, so the app's original prompt and settings now go to gpt-3.5-turbo-0613, its closest surviving GPT-3.5 relative. Chat live, no key needed.",
-    },
-    links: [
-      { label: "Source code", href: "https://github.com/Colbyco/OpenAI-Chat-Bot" },
-      { label: "2022 deployment", href: "https://openai-chat-bot.pages.dev/" },
-    ],
-  },
-  {
-    slug: "library",
-    kind: "project",
-    year: 2022,
-    date: "July 2022",
-    stage: "Summer after 2nd year of college",
-    title: "Library Relational Database API",
-    railTitle: "Library Database API",
-    tagline: "REST API over a relational catalog",
-    summary:
-      "A REST API for a library catalog: authors, books and inventory in a relational PostgreSQL schema.",
-    built: [
-      "CRUD endpoints in Express, backed by Knex queries.",
-      "Knex migrations that build the schema and populate it with starter data.",
-      "Relational design linking authors, books and inventory.",
-    ],
-    tech: [
-      { label: "Backend", items: ["Node.js", "Express"] },
-      { label: "Data", items: ["PostgreSQL", "Knex", "SQL"] },
-    ],
-    preview: {
-      mode: "original",
-      url: "/previews/library/",
-      address: "library-relational-database-api · 2022 routes",
-      note: "The original 2022 Express and Knex routes run live on sandboxed in-memory PostgreSQL (PGlite) built by their original migrations, plus one disclosed schema fix so the write routes work. It resets every 30 minutes; the console was added for this portfolio.",
-    },
-    links: [{ label: "Source code", href: "https://github.com/Colbyco/library-relational-database-api" }],
-  },
-  {
-    slug: "cvs-intern",
-    kind: "career",
-    year: 2023,
-    date: "May – August 2023",
-    stage: "Summer after 3rd year of college",
-    title: "Digital Engineering Intern, CVS Health",
-    railTitle: "Intern · CVS Health",
-    tagline: "First enterprise engineering role",
-    summary:
-      "My first engineering role, on CVS Health's API development team, working within enterprise API standards and processes.",
-    built: [
-      "Built a self-service metrics dashboard that let leadership find and export data on their own, replacing manual requests to developers.",
-      "Front end in React, TypeScript and Chakra UI over data from a MySQL database, with quick toggles for selecting, filtering and downloading data.",
-      "Worked with SwaggerHub, Apigee Edge, Jenkins and Splunk inside the enterprise API process.",
-    ],
-    tech: [
-      { label: "Frontend", items: ["React", "TypeScript", "Chakra UI"] },
-      { label: "Data", items: ["MySQL"] },
-      { label: "Platform", items: ["SwaggerHub", "Apigee Edge", "Jenkins", "Splunk"] },
-    ],
-    preview: {
-      mode: "career",
-      address: "CVS Health · internal",
-      note: "Internal work. Described from my resume; no code or screens are public.",
-    },
-    metrics: [
-      { value: "Self-serve", label: "metrics and exports for leadership, replacing manual requests to developers" },
-    ],
-    links: [],
-  },
-  {
-    slug: "proshop",
-    kind: "project",
-    year: 2024,
-    date: "April 2024",
-    stage: "4th year of college",
-    title: "ProShop course project",
-    tagline: "My changes to a MERN e-commerce app",
-    summary:
-      "A college course project built on Brad Traversy's ProShop e-commerce app. The viewer shows only my changes.",
-    built: [
-      "Ten code-smell fixes across React screens in one pull request: PropTypes, merged duplicate imports, stable list keys instead of array indexes, and nested loading/error ternaries flattened.",
-      "Google and Facebook sign-in logic on the login screen.",
-      "17 commits in April 2024 on a team fork of the course codebase.",
-    ],
-    tech: [
-      { label: "Frontend", items: ["React", "Redux Toolkit"] },
-      { label: "Backend", items: ["Node.js", "Express"] },
-      { label: "Data", items: ["MongoDB"] },
-    ],
-    preview: {
-      mode: "contribution",
-      url: "/previews/proshop/",
-      address: "proshop-v2 · my pull request and commits",
-      note: "The course app is Brad Traversy's. This view shows my pull request and commits, with diffs from GitHub.",
-    },
-    links: [
-      { label: "Course project source", href: "https://github.com/Colbyco/proshop-v2" },
-      { label: "My pull request", href: "https://github.com/Colbyco/proshop-v2/pull/1" },
-    ],
-  },
-  {
-    slug: "cvs-scheduling",
-    kind: "career",
-    year: 2024,
-    date: "2024 – 2026",
-    stage: "Software Engineer, full time",
-    title: "API Scheduling Team, CVS Health",
-    railTitle: "API Scheduling · CVS",
-    tagline: "Appointment APIs for in-person and virtual care",
-    summary:
-      "APIs and data flows behind appointment scheduling for CVS Health's in-person and virtual care. I also owned releases and built the team's tracing, test speedups and an LLM triage bot.",
-    built: [
-      "Release owner for 19 months. Built automation that opens promotion PRs from the latest CI image tags, which shipped an 11-service UAT release wave in one day.",
-      "Built structured logging and cross-service request tracing (correlation IDs, parent spans, OpenTelemetry) across all 3 core scheduling services. A 16.5k-event audit found and fixed lost correlation on 1.6% of outbound calls.",
-      "Cut the scheduling API's full test suite 58% (5m33s → 2m22s) and one test group 97% (185 s → 6 s) by removing per-test Spring context rebuilds and test-state leaks.",
-      "Built an LLM triage bot for lower-environment tickets. It maps 44 GraphQL queries, 22 mutations and 60+ downstream APIs into a knowledge graph, routes log traces through a gatekeeper model to 8 domain-expert nodes, and posts the root cause and owning team to Slack. Mentored a newly hired engineer through his first project on it.",
-      "Shipped earliest-availability and distance ranking for employer-sponsored provider search to production.",
-      "Carried preferred-pharmacy selections across 6 services through booking, confirmation and rescheduling, persisted to Cassandra and MySQL.",
-      "Migrated 10 codebases to GitHub Actions and remediated dependency vulnerabilities across 17 scheduling repositories, taking one API from 33 findings to 0.",
-      "Root-caused 15+ defects, including a Netty bitmask bug that rejected valid URIs containing \"J\" or \"M\".",
-    ],
-    tech: [
-      { label: "Backend", items: ["Java", "Spring Boot", "GraphQL", "REST"] },
-      { label: "Data", items: ["Cassandra", "MySQL"] },
-      { label: "Delivery", items: ["GitHub Actions", "Harness", "Snyk"] },
-      { label: "Observability", items: ["OpenTelemetry", "Splunk", "Structured logging"] },
-      { label: "AI tooling", items: ["Python", "LLM routing", "Slack integration"] },
-    ],
-    preview: {
-      mode: "career",
-      address: "CVS Health · internal",
-      note: "Internal work, described in general terms. No code or screens are public.",
-    },
-    metrics: [
-      { value: "58%", label: "faster full test suite (5m33s → 2m22s); one group 185 s → 6 s" },
-      { value: "19 mo", label: "release owner; 11 services shipped to UAT in one day with my automation" },
-      { value: "1.6%", label: "lost trace correlation found and fixed in a 16.5k-event audit" },
-      { value: "17", label: "scheduling repositories cleared of dependency vulnerabilities" },
-    ],
-    links: [],
-  },
-  {
-    slug: "music-search",
-    kind: "project",
-    year: 2024,
-    date: "December 2024",
-    stage: "First year as a software engineer",
-    title: "Music Search App",
-    tagline: "Java MP3 indexer over ID3 tags",
-    summary:
-      "A Java tool that walks the folders you choose, reads every MP3's ID3v1 and ID3v2 tags, and indexes the songs by title and artist.",
-    built: [
-      "Recursive folder walk with java.nio's Files.walkFileTree.",
-      "Tag reading with mp3agic for both ID3 versions, plus length, bitrate, sample rate and channel mode.",
-      "Songs indexed by title and artist; built with Maven.",
-    ],
-    tech: [
-      { label: "Language", items: ["Java"] },
-      { label: "Libraries", items: ["mp3agic", "java.nio"] },
-      { label: "Build", items: ["Maven"] },
-    ],
-    preview: {
-      mode: "original",
-      url: "/previews/music-search/",
-      address: "music-search-app · 2024 Java code",
-      note: "The original, unmodified Java classes running in your browser on CheerpJ, a Java virtual machine in WebAssembly, over a bundled sample library of tagged MP3s.",
-    },
-    links: [{ label: "Source code", href: "https://github.com/Colbyco/music-search-app" }],
-  },
-  {
     slug: "cvs-ai-assistant",
     kind: "career",
+    tier: "main",
+    keyTech: ["Python", "LangGraph", "FastAPI", "React"],
     year: 2026,
-    date: "2026 – present",
+    date: "May 2026 – present",
     stage: "Software Engineer, full time",
     title: "Health Agent AI Team, CVS Health",
     railTitle: "Health Agent AI · CVS",
@@ -327,7 +87,7 @@ export const entries: Entry[] = [
     tech: [
       { label: "AI systems", items: ["LangGraph", "Multi-agent routing", "Offline evaluation", "Guardrails"] },
       { label: "Tooling", items: ["React", "TypeScript", "FastAPI", "SQLite"] },
-      { label: "Observability", items: ["Splunk", "Structured events", "Session timelines"] },
+      { label: "Observability", items: ["Splunk", "OpenTelemetry", "Structured logging"] },
       { label: "Security", items: ["Envelope encryption", "PHI/PII redaction"] },
     ],
     preview: {
@@ -344,8 +104,43 @@ export const entries: Entry[] = [
     links: [],
   },
   {
+    slug: "spotify-classic-lyrics",
+    kind: "project",
+    tier: "main",
+    keyTech: ["Electron", "Node.js", "GitHub Actions"],
+    year: 2026,
+    date: "October 2026",
+    stage: "While working full time at CVS Health",
+    title: "Spotify Classic Lyrics",
+    tagline: "One-click desktop fix for Spotify's lyrics",
+    summary:
+      "A one-click desktop fix that puts Spotify's lyrics back beside your library and playback controls, on Windows and macOS.",
+    built: [
+      "Electron app that changes Spotify's local preferences, with Undo to restore the previous setting.",
+      "Local diagnostics and a reviewable problem report; nothing is sent without permission.",
+      "Automatic updates on Windows and a GitHub Actions release pipeline: four releases, v1.0.1 to v1.0.4, in October 2026.",
+    ],
+    tech: [
+      { label: "Desktop", items: ["Electron", "Node.js"] },
+      { label: "Storage", items: ["LevelDB (classic-level)"] },
+      { label: "Delivery", items: ["GitHub Actions", "electron-updater"] },
+    ],
+    preview: {
+      mode: "simulated",
+      url: "/previews/spotify-classic-lyrics/",
+      address: "Classic Lyrics · v1.0.4 interface",
+      note: "The app's real interface and its own main-process code, with only Electron, the settings store and the operating system simulated. Nothing on your computer is changed.",
+    },
+    links: [
+      { label: "Download v1.0.4", href: "https://github.com/Colbyco/spotify-classic-lyrics/releases/latest" },
+      { label: "Source code", href: "https://github.com/Colbyco/spotify-classic-lyrics" },
+    ],
+  },
+  {
     slug: "aspicio",
     kind: "project",
+    tier: "main",
+    keyTech: ["Next.js", "TypeScript", "Three.js", "Supabase"],
     year: 2026,
     date: "July 2026",
     stage: "While working full time at CVS Health",
@@ -385,35 +180,265 @@ export const entries: Entry[] = [
     ],
   },
   {
-    slug: "spotify-classic-lyrics",
-    kind: "project",
-    year: 2026,
-    date: "October 2026",
-    stage: "While working full time at CVS Health",
-    title: "Spotify Classic Lyrics",
-    tagline: "One-click desktop fix for Spotify's lyrics",
+    slug: "cvs-scheduling",
+    kind: "career",
+    tier: "main",
+    keyTech: ["Java", "Spring Boot", "GraphQL", "Cassandra"],
+    year: 2024,
+    date: "Jun 2024 – May 2026",
+    stage: "Software Engineer, full time",
+    title: "API Scheduling Team, CVS Health",
+    railTitle: "API Scheduling · CVS",
+    tagline: "Appointment APIs for in-person and virtual care",
     summary:
-      "A one-click desktop fix that puts Spotify's lyrics back beside your library and playback controls, on Windows and macOS.",
+      "APIs and data flows behind appointment scheduling for CVS Health's in-person and virtual care. I also owned releases and built the team's tracing, test speedups and an LLM triage bot.",
     built: [
-      "Electron app that changes Spotify's local preferences, with Undo to restore the previous setting.",
-      "Local diagnostics and a reviewable problem report; nothing is sent without permission.",
-      "Automatic updates on Windows and a GitHub Actions release pipeline: four releases, v1.0.1 to v1.0.4, in October 2026.",
+      "Release owner for 19 months. Built automation that opens promotion PRs from the latest CI image tags, which shipped an 11-service UAT release wave in one day.",
+      "Built structured logging and cross-service request tracing (correlation IDs, parent spans, OpenTelemetry) across all 3 core scheduling services. A 16.5k-event audit found and fixed lost correlation on 1.6% of outbound calls.",
+      "Cut the scheduling API's full test suite 58% (5m33s → 2m22s) and one test group 97% (185 s → 6 s) by removing per-test Spring context rebuilds and test-state leaks.",
+      "Built an LLM triage bot for lower-environment tickets. It maps 44 GraphQL queries, 22 mutations and 60+ downstream APIs into a knowledge graph, routes log traces through a gatekeeper model to 8 domain-expert nodes, and posts the root cause and owning team to Slack. Mentored a newly hired engineer through his first project on it.",
+      "Shipped earliest-availability and distance ranking for employer-sponsored provider search to production.",
+      "Carried preferred-pharmacy selections across 6 services through booking, confirmation and rescheduling, persisted to Cassandra and MySQL.",
+      "Migrated 10 codebases to GitHub Actions and remediated dependency vulnerabilities across 17 scheduling repositories, taking one API from 33 findings to 0.",
+      "Root-caused 15+ defects, including a Netty bitmask bug that rejected valid URIs containing \"J\" or \"M\".",
     ],
     tech: [
-      { label: "Desktop", items: ["Electron", "Node.js"] },
-      { label: "Storage", items: ["LevelDB (classic-level)"] },
-      { label: "Delivery", items: ["GitHub Actions", "electron-updater"] },
+      { label: "Backend", items: ["Java", "Spring Boot", "GraphQL", "REST"] },
+      { label: "Data", items: ["Cassandra", "MySQL"] },
+      { label: "Delivery", items: ["GitHub Actions", "Harness", "Snyk"] },
+      { label: "Observability", items: ["OpenTelemetry", "Splunk", "Structured logging"] },
+      { label: "AI tooling", items: ["Python", "LLM routing", "Slack API"] },
     ],
     preview: {
-      mode: "simulated",
-      url: "/previews/spotify-classic-lyrics/",
-      address: "Classic Lyrics · v1.0.4 interface",
-      note: "The app's real interface and its own main-process code, with only Electron, the settings store and the operating system simulated. Nothing on your computer is changed.",
+      mode: "career",
+      address: "CVS Health · internal",
+      note: "Internal work, described in general terms. No code or screens are public.",
+    },
+    metrics: [
+      { value: "58%", label: "faster full test suite (5m33s → 2m22s); one group 185 s → 6 s" },
+      { value: "19 mo", label: "release owner; 11 services shipped to UAT in one day with my automation" },
+      { value: "1.6%", label: "lost trace correlation found and fixed in a 16.5k-event audit" },
+      { value: "17", label: "scheduling repositories cleared of dependency vulnerabilities" },
+    ],
+    links: [],
+  },
+  {
+    slug: "music-search",
+    kind: "project",
+    tier: "main",
+    keyTech: ["Java", "Maven", "mp3agic"],
+    year: 2024,
+    date: "December 2024",
+    stage: "First year as a software engineer",
+    title: "Music Search App",
+    tagline: "Java MP3 indexer over ID3 tags",
+    summary:
+      "A Java tool that walks the folders you choose, reads every MP3's ID3v1 and ID3v2 tags, and indexes the songs by title and artist.",
+    built: [
+      "Recursive folder walk with java.nio's Files.walkFileTree.",
+      "Tag reading with mp3agic for both ID3 versions, plus length, bitrate, sample rate and channel mode.",
+      "Songs indexed by title and artist; built with Maven.",
+    ],
+    tech: [
+      { label: "Language", items: ["Java"] },
+      { label: "Libraries", items: ["mp3agic", "java.nio"] },
+      { label: "Build", items: ["Maven"] },
+    ],
+    preview: {
+      mode: "original",
+      url: "/previews/music-search/",
+      address: "music-search-app · 2024 Java code",
+      note: "The original, unmodified Java classes running in your browser on CheerpJ, a Java virtual machine in WebAssembly, over a bundled sample library of tagged MP3s.",
+    },
+    links: [{ label: "Source code", href: "https://github.com/Colbyco/music-search-app" }],
+  },
+  {
+    slug: "cvs-intern",
+    kind: "career",
+    tier: "main",
+    keyTech: ["React", "TypeScript", "MySQL", "Apigee"],
+    year: 2023,
+    date: "May – August 2023",
+    stage: "Summer after 3rd year of college",
+    title: "Digital Engineering Intern, CVS Health",
+    railTitle: "Intern · CVS Health",
+    tagline: "First enterprise engineering role",
+    summary:
+      "My first engineering role, on CVS Health's API development team, working within enterprise API standards and processes.",
+    built: [
+      "Built a self-service metrics dashboard that let leadership find and export data on their own, replacing manual requests to developers.",
+      "Front end in React, TypeScript and Chakra UI over data from a MySQL database, with quick toggles for selecting, filtering and downloading data.",
+      "Worked with SwaggerHub, Apigee Edge, Jenkins and Splunk inside the enterprise API process.",
+    ],
+    tech: [
+      { label: "Frontend", items: ["React", "TypeScript", "Chakra UI"] },
+      { label: "Data", items: ["MySQL"] },
+      { label: "Platform", items: ["SwaggerHub", "Apigee Edge", "Jenkins", "Splunk"] },
+    ],
+    preview: {
+      mode: "career",
+      address: "CVS Health · internal",
+      note: "Internal work. Described from my resume; no code or screens are public.",
+    },
+    metrics: [
+      { value: "Self-serve", label: "metrics and exports for leadership, replacing manual requests to developers" },
+    ],
+    links: [],
+  },
+  {
+    slug: "openai-chatbot",
+    kind: "project",
+    tier: "main",
+    keyTech: ["Vue 3", "Vite", "OpenAI API"],
+    year: 2022,
+    date: "June 2022",
+    stage: "Summer after 2nd year of college",
+    title: "OpenAI Chatbot",
+    tagline: "A chat UI on GPT-3.5, before ChatGPT",
+    summary:
+      "A chat interface on OpenAI's text-davinci-002 completion model, built five months before ChatGPT launched.",
+    built: [
+      "Prompt engineering that makes a completion model behave like a chat partner.",
+      "Vue 3 and Vuetify 3 single-page app built with Vite, with temperature and length controls in a settings drawer.",
+      "Bring-your-own-key design: the key stays in memory and is validated against the API before chatting.",
+      "Deployed on Cloudflare Pages, where the 2022 build is still online.",
+    ],
+    tech: [
+      { label: "Frontend", items: ["Vue 3", "Vuetify 3", "Vite"] },
+      { label: "AI", items: ["OpenAI API", "text-davinci-002"] },
+      { label: "Hosting", items: ["Cloudflare Pages"] },
+    ],
+    preview: {
+      mode: "original",
+      url: "/previews/openai-chatbot/",
+      address: "openai-chat-bot · 2022 build",
+      note: "Rebuilt from the 2022 lockfile; unmodified, it is byte-identical to the live 2022 deployment. OpenAI shut text-davinci-002 down in January 2024, so the app's original prompt and settings now go to gpt-3.5-turbo-0613, its closest surviving GPT-3.5 relative. Chat live, no key needed.",
     },
     links: [
-      { label: "Download v1.0.4", href: "https://github.com/Colbyco/spotify-classic-lyrics/releases/latest" },
-      { label: "Source code", href: "https://github.com/Colbyco/spotify-classic-lyrics" },
+      { label: "Source code", href: "https://github.com/Colbyco/OpenAI-Chat-Bot" },
+      { label: "2022 deployment", href: "https://openai-chat-bot.pages.dev/" },
     ],
+  },
+  {
+    slug: "proshop",
+    kind: "project",
+    tier: "school",
+    keyTech: ["React", "Redux", "Node.js", "MongoDB"],
+    year: 2024,
+    date: "April 2024",
+    stage: "4th year of college",
+    title: "ProShop course project",
+    tagline: "My changes to a MERN e-commerce app",
+    summary:
+      "A college course project built on Brad Traversy's ProShop e-commerce app. The viewer shows only my changes.",
+    built: [
+      "Ten code-smell fixes across React screens in one pull request: PropTypes, merged duplicate imports, stable list keys instead of array indexes, and nested loading/error ternaries flattened.",
+      "Google and Facebook sign-in logic on the login screen.",
+      "17 commits in April 2024 on a team fork of the course codebase.",
+    ],
+    tech: [
+      { label: "Frontend", items: ["React", "Redux Toolkit"] },
+      { label: "Backend", items: ["Node.js", "Express"] },
+      { label: "Data", items: ["MongoDB"] },
+    ],
+    preview: {
+      mode: "contribution",
+      url: "/previews/proshop/",
+      address: "proshop-v2 · my pull request and commits",
+      note: "The course app is Brad Traversy's. This view shows my pull request and commits, with diffs from GitHub.",
+    },
+    links: [
+      { label: "Course project source", href: "https://github.com/Colbyco/proshop-v2" },
+      { label: "My pull request", href: "https://github.com/Colbyco/proshop-v2/pull/1" },
+    ],
+  },
+  {
+    slug: "library",
+    kind: "project",
+    tier: "school",
+    keyTech: ["Node.js", "Express", "PostgreSQL", "Knex"],
+    year: 2022,
+    date: "July 2022",
+    stage: "Summer after 2nd year of college",
+    title: "Library Relational Database API",
+    railTitle: "Library Database API",
+    tagline: "REST API over a relational catalog",
+    summary:
+      "A REST API for a library catalog: authors, books and inventory in a relational PostgreSQL schema.",
+    built: [
+      "CRUD endpoints in Express, backed by Knex queries.",
+      "Knex migrations that build the schema and populate it with starter data.",
+      "Relational design linking authors, books and inventory.",
+    ],
+    tech: [
+      { label: "Backend", items: ["Node.js", "Express"] },
+      { label: "Data", items: ["PostgreSQL", "Knex", "SQL"] },
+    ],
+    preview: {
+      mode: "original",
+      url: "/previews/library/",
+      address: "library-relational-database-api · 2022 routes",
+      note: "The original 2022 Express and Knex routes run live on sandboxed in-memory PostgreSQL (PGlite) built by their original migrations, plus one disclosed schema fix so the write routes work. It resets every 30 minutes; the console was added for this portfolio.",
+    },
+    links: [{ label: "Source code", href: "https://github.com/Colbyco/library-relational-database-api" }],
+  },
+  {
+    slug: "weather",
+    kind: "project",
+    tier: "school",
+    keyTech: ["Node.js", "Express", "PostgreSQL", "Knex"],
+    year: 2021,
+    date: "August 2021",
+    stage: "Summer after 1st year of college",
+    title: "Weather Database",
+    tagline: "City weather lookups saved to Postgres",
+    summary:
+      "Look up a city's current weather and save it as an observation. A server-rendered table keeps every earlier search.",
+    built: [
+      "Express routes that call a weather API and store each result in PostgreSQL.",
+      "Knex migrations for the schema, run automatically on every Heroku deploy.",
+      "EJS and Bootstrap results table of all saved observations.",
+    ],
+    tech: [
+      { label: "Backend", items: ["Node.js", "Express", "Axios"] },
+      { label: "Data", items: ["PostgreSQL", "Knex migrations"] },
+      { label: "Frontend", items: ["EJS", "Bootstrap 5"] },
+    ],
+    preview: {
+      mode: "original",
+      url: "/api/weather/",
+      address: "weather-database-website · 2021 server code",
+      note: "The original 2021 Express and EJS app runs live on a serverless function, on in-memory PostgreSQL (PGlite) built by its original migrations. Lookups use keyless Open-Meteo in place of the keyed OpenWeatherMap call, and the data resets every hour.",
+    },
+    links: [{ label: "Source code", href: "https://github.com/Colbyco/weather-database-website" }],
+  },  {
+    slug: "summoner",
+    kind: "project",
+    tier: "school",
+    keyTech: ["Node.js", "Express", "EJS", "Bootstrap"],
+    year: 2021,
+    date: "July 2021",
+    stage: "Summer after 1st year of college",
+    title: "Summoner Spell Generator",
+    tagline: "League of Legends spell randomizer",
+    summary:
+      "A randomizer for League of Legends summoner spells: choose a map mode, switch off the spells you don't want, and roll a pair for your next game.",
+    built: [
+      "Express server that renders an EJS page with a random opening pair, never the same spell twice.",
+      "Client-side rules: Mark only exists in ARAM, and spells you switch off never come up.",
+      "Bootstrap 5 layout around the original spell artwork.",
+    ],
+    tech: [
+      { label: "Frontend", items: ["JavaScript", "EJS", "Bootstrap 5"] },
+      { label: "Backend", items: ["Node.js", "Express"] },
+    ],
+    preview: {
+      mode: "original",
+      url: "/previews/summoner/",
+      address: "summoner-spell-generator · 2021 build",
+      note: "The original 2021 page, styles and script, served as static files. The server's random first roll now runs in the browser using the same functions, and the spell icons gained keyboard support.",
+    },
+    links: [{ label: "Source code", href: "https://github.com/Colbyco/summoner-spell-generator" }],
   },
 ];
 
@@ -426,9 +451,12 @@ export const impact: Metric[] = [
   { value: "427", label: "merged PRs and 402 code reviews at CVS Health" },
 ];
 
+/** Shown under the intro: the stack a recruiter should see in the first five seconds. */
+export const coreStack = ["Java", "Python", "TypeScript", "Spring Boot", "FastAPI", "React", "LangGraph", "GraphQL", "PostgreSQL", "Kubernetes"];
+
 export const skills: TechGroup[] = [
-  { label: "Languages and frameworks", items: ["Java", "Python", "TypeScript", "JavaScript", "SQL", "Spring Boot", "FastAPI", "React", "LangGraph", "REST", "GraphQL"] },
-  { label: "AI systems", items: ["LLM applications", "Multi-agent routing", "Offline evaluation", "Guardrails"] },
-  { label: "Security and delivery", items: ["Snyk", "Software composition analysis", "GitHub Actions", "Harness", "Argo CD", "Kubernetes"] },
-  { label: "Data and observability", items: ["MySQL", "PostgreSQL", "Cassandra", "Redis", "Splunk", "OpenTelemetry"] },
+  { label: "Languages and frameworks", items: ["Java", "Python", "TypeScript", "JavaScript", "SQL", "Spring Boot", "FastAPI", "React", "Next.js", "Node.js", "LangGraph", "REST", "GraphQL"] },
+  { label: "AI systems", items: ["LLM applications", "Multi-agent routing", "Offline evaluation", "Guardrails", "Prompt design"] },
+  { label: "Infrastructure and delivery", items: ["Kubernetes", "Docker", "GitHub Actions", "Harness", "Argo CD", "Snyk", "Vercel"] },
+  { label: "Data and observability", items: ["PostgreSQL", "MySQL", "Cassandra", "Redis", "Splunk", "OpenTelemetry"] },
 ];
