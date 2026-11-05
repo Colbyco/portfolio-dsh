@@ -112,18 +112,7 @@ const stageData = entries.map((e) => ({
           </div>
           <div class="route-bar" data-routes role="toolbar" aria-label="Pages in this preview" hidden></div>
           <div class="frame-view" data-view>
-            <img
-              class="poster"
-              data-poster
-              src={`/posters/${FEATURED}.webp`}
-              srcset={`/posters/${FEATURED}-800.webp 800w, /posters/${FEATURED}.webp 1280w`}
-              sizes="(max-width: 1099px) 100vw, 56vw"
-              alt=""
-              width="1280"
-              height="860"
-              fetchpriority="high"
-              decoding="async"
-            />
+            <img class="poster" data-poster alt="" width="1280" height="860" sizes="(max-width: 1099px) 100vw, 56vw" decoding="async" hidden />
             {careers.map((e) => (
               <div class="career-card" data-career={e.slug} hidden>
                 <p class="career-kicker"><Icon name="briefcase" size={14} /> {e.date} · CVS Health</p>

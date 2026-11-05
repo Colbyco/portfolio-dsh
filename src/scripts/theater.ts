@@ -82,6 +82,10 @@ const MAX_FRAMES = 4; // keep recently viewed previews alive for instant switchi
 const frames = new Map<string, { el: HTMLIFrameElement; loaded: boolean; used: number }>();
 let current = "";
 let slowTimer = 0;
+/** Becomes true after the visitor's first click/key press. */
+let interacted = false;
+addEventListener("pointerdown", () => (interacted = true), { once: true, capture: true });
+addEventListener("keydown", () => (interacted = true), { once: true, capture: true });
 /** When the visitor last used a timeline tab (for returning focus stolen by preview autofocus). */
 let tabFocusedAt = 0;
 let clock = 0;
@@ -242,12 +246,11 @@ function render(entry: StageEntry, { load = true } = {}) {
       hideLoading();
       rec.el.classList.add("is-active");
       rec.used = ++clock;
-    } else {
-      setPoster(entry.slug);
-      if (load) {
-        showLoading(entry);
-        ensureFrame(entry).el.classList.add("is-active");
-      }
+    } else if (load) {
+      // Posters only after the first interaction; on first load the live preview paints directly.
+      if (interacted) setPoster(entry.slug);
+      showLoading(entry);
+      ensureFrame(entry).el.classList.add("is-active");
     }
   }
 
@@ -401,14 +404,25 @@ function fitTheater() {
   const top = theater.getBoundingClientRect().top + window.scrollY;
   document.documentElement.style.setProperty("--above-theater", `${Math.round(top)}px`);
 }
-fitTheater();
 addEventListener("resize", fitTheater);
 
-// Initial selection: deep link or the featured project. The poster paints immediately; the live
-// iframe starts after the page has loaded so it doesn't compete with first paint.
+// Initial selection: deep link or the featured project. The server-rendered HTML already shows the
+// featured project, so the first pass (which measures layout) waits until after the first frame,
+// and the live iframe starts after the page has loaded so nothing competes with first paint.
 const initial = bySlug.has(location.hash.slice(1)) ? location.hash.slice(1) : order.includes("aspicio") ? "aspicio" : order[0];
-select(initial, { load: false, updateHash: false });
-const start = () => select(current, { load: true, updateHash: false });
+current = initial;
+let booted = false;
+const boot = () => {
+  if (booted) return;
+  booted = true;
+  fitTheater();
+  select(initial, { load: false, updateHash: false });
+};
+requestAnimationFrame(() => setTimeout(boot, 0));
+const start = () => {
+  boot();
+  select(current, { load: true, updateHash: false });
+};
 if (document.readyState === "complete") setTimeout(start, 50);
 else addEventListener("load", () => setTimeout(start, 50), { once: true });
 // Server previews run on serverless functions that boot Postgres (PGlite) on a cold start
